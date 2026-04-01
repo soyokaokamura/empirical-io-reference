@@ -1,0 +1,88 @@
+site_name: Empirical IO Reference
+site_description: 実証産業組織論の推定手法リファレンスガイド
+site_url: https://YOUR_USERNAME.github.io/empirical-io-reference/
+
+theme:
+  name: material
+  language: ja
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - toc.follow
+
+plugins:
+  - search:
+      lang: ja
+
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+  - ホーム: index.md
+  - Demand Estimation:
+    - 概要: demand/index.md
+    - OLS / Logit (Naive): demand/ols_logit.md
+    - BLP (1995): demand/blp.md
+    - BLP with Micro Moments: demand/blp_micro.md
+    - Nested Logit: demand/nested_logit.md
+    - Hausman IV: demand/hausman_iv.md
+    - Nonparametric: demand/nonparametric.md
+  - Cost Estimation:
+    - 概要: cost/index.md
+    - Markup / FOC-Based: cost/markup.md
+    - Production Function (OP/LP/ACF): cost/production_function.md
+    - Stochastic Frontier: cost/frontier.md
+  - Dynamic Estimation:
+    - 概要: dynamic/index.md
+    - Rust (1987) NFXP: dynamic/rust.md
+    - Hotz-Miller CCP: dynamic/hotz_miller.md
+    - BBL (2007): dynamic/bbl.md
+    - Pakes-Ostrovsky-Berry: dynamic/pob.md
+    - Aguirregabiria-Mira NPL: dynamic/npl.md
+  - Entry / Exit Models:
+    - 概要: entry/index.md
+    - Bresnahan-Reiss (1991): entry/bresnahan_reiss.md
+    - Berry (1992): entry/berry.md
+    - Ciliberto-Tamer (2009): entry/ciliberto_tamer.md
+    - Ericson-Pakes (1995): entry/ericson_pakes.md
+  - Counterfactual Analysis:
+    - なぜ構造モデルが必要か: counterfactual/why.md
+    - Merger Simulation: counterfactual/merger.md
+    - Entry / Exit CF: counterfactual/entry_exit.md
+    - Policy CF (Dynamic): counterfactual/policy.md
+    - 限界と注意点: counterfactual/limitations.md
+  - 参照文献: references.md
