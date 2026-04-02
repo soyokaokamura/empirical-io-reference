@@ -134,6 +134,69 @@ Berry (1994) の contraction mapping で平均効用 \(\delta_{jt}\) を解く:
 
 ---
 
+## コストパラメータとの同時推定
+
+需要パラメータ \(\theta_d\) とコストパラメータ \(\gamma\) の推定には**逐次推定**と**同時推定**の2つのアプローチがある。
+
+### アプローチ1: 逐次推定（Sequential Estimation）
+
+最も一般的なやり方。需要とコストを別々に推定する。
+
+```
+Step 1: BLP で需要パラメータ θ_d を推定
+    ↓
+Step 2: FOC から mc をリカバリー（mc = p + (Ω ⊙ Δ)⁻¹ s）
+    ↓
+Step 3: mc を費用shifterに回帰してコストパラメータ γ を推定
+        ln mc_j = w_j γ + ω_j
+```
+
+- シンプルで実装しやすい
+- **非効率**: Step 1 の推定誤差が Step 2・3 に伝播するが、その誤差を無視している
+- 標準誤差を正確に計算するにはDelta methodかBootstrapが必要
+
+### アプローチ2: 同時推定（Joint Estimation）
+
+需要パラメータ \(\theta_d\) とコストパラメータ \(\gamma\) を**同時にGMMで推定**。
+
+**需要側のモーメント**（BLP標準）:
+
+\[
+E[\xi_{jt} \cdot z_{jt}^d] = 0
+\]
+
+**供給側のモーメント**（FOCから導かれるコスト残差）:
+
+\[
+\omega_{jt} = mc_{jt}(\theta_d) - w_{jt}\gamma, \quad E[\omega_{jt} \cdot z_{jt}^s] = 0
+\]
+
+- \(w_{jt}\): 費用shifter（賃金・原材料価格等）
+- \(z_{jt}^s\): 供給側のIV（費用shifterのlag等）
+- \(mc_{jt}(\theta_d)\): BLPのFOCから計算される限界費用（需要パラメータに依存）
+
+**同時推定のGMM目的関数**:
+
+\[
+(\hat{\theta}_d, \hat{\gamma}) = \arg\min \begin{bmatrix} \xi(\theta_d) \\ \omega(\theta_d, \gamma) \end{bmatrix}' W \begin{bmatrix} \xi(\theta_d) \\ \omega(\theta_d, \gamma) \end{bmatrix}
+\]
+
+### 比較まとめ
+
+| | 逐次推定 | 同時推定 |
+|--|---------|---------|
+| **実装** | 簡単 | 複雑 |
+| **漸近効率性** | 低い | 高い |
+| **標準誤差** | Delta method / Bootstrap が必要 | 自動的に正しいSEが得られる |
+| **識別への貢献** | 需要のみで識別 | 供給側情報が需要パラメータの識別を補完 |
+| **使用例** | Nevo (2001) | Villas-Boas (2007) |
+
+!!! note "供給側モーメントが識別を助けるケース"
+    価格のIVが弱い場合や、Random Coefficientsのパラメータ（\(\Sigma\)）の識別が難しい場合に、
+    供給側のモーメント条件を追加することで需要パラメータの識別が改善されることがある。
+
+---
+
 ## 参照論文
 
 - Berry (1994) "Estimating Discrete-Choice Models of Product Differentiation." *RAND Journal of Economics*
